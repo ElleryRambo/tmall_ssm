@@ -28,4 +28,9 @@
         DELETE FROM  category WHERE id = #{id}
     </delete>
 
+    <!--获取分类-->
+    <select id="get" resultType="Category">
+        SELECT * FROM category WHERE id=#{id}
+    </select>
+
 </mapper>

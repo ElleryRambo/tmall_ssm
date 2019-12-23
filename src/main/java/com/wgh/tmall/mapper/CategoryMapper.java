@@ -17,4 +17,7 @@ public interface CategoryMapper {
 
     //删除分类
     void delete(int id);
+
+    //获取分类
+    Category get(int id);
 }
