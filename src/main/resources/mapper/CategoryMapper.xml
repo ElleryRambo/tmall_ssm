@@ -8,15 +8,15 @@
     <!--查询所有分类-->
     <select id="list" resultType="Category">
         select * from category order by id desc
-        <if test="start!=null and count!=null">
-            limit #{start},#{count}
-        </if>
+        <!--<if test="start!=null and count!=null">-->
+            <!--limit #{start},#{count}-->
+        <!--</if>-->
     </select>
 
     <!--查询分类总数-->
-    <select id="total" resultType="int">
-        select count(*) from category
-    </select>
+    <!--<select id="total" resultType="int">-->
+        <!--select count(*) from category-->
+    <!--</select>-->
 
     <!--增加分类-->
     <insert id="add"  keyProperty="id"  useGeneratedKeys="true" parameterType="Category" >

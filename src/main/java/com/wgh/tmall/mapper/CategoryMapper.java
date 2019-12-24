@@ -7,10 +7,11 @@ import java.util.List;
 
 public interface CategoryMapper {
     //查询所有分类
-    List<Category> list(Page page);
+//    List<Category> list(Page page);
+    List<Category> list();
 
     //获取总数据条数
-    public int total();
+//    public int total();
 
     //增加分类
     void add(Category category);
