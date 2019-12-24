@@ -33,4 +33,9 @@
         SELECT * FROM category WHERE id=#{id}
     </select>
 
+    <!--编辑分类-->
+    <update id="update" parameterType="Category">
+        UPDATE category set NAME =#{name} WHERE id = #{id}
+    </update>
+
 </mapper>

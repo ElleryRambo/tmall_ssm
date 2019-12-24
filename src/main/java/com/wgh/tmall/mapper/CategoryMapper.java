@@ -20,4 +20,7 @@ public interface CategoryMapper {
 
     //获取分类
     Category get(int id);
+
+    //编辑分类
+    void update(Category category);
 }
