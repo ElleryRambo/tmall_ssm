@@ -1,27 +1,21 @@
 package com.wgh.tmall.mapper;
 
 import com.wgh.tmall.pojo.Category;
-import com.wgh.tmall.util.Page;
-
+import com.wgh.tmall.pojo.CategoryExample;
 import java.util.List;
 
 public interface CategoryMapper {
-    //查询所有分类
-//    List<Category> list(Page page);
-    List<Category> list();
+    int deleteByPrimaryKey(Integer id);
 
-    //获取总数据条数
-//    public int total();
+    int insert(Category record);
 
-    //增加分类
-    void add(Category category);
+    int insertSelective(Category record);
 
-    //删除分类
-    void delete(int id);
+    List<Category> selectByExample(CategoryExample example);
 
-    //获取分类
-    Category get(int id);
+    Category selectByPrimaryKey(Integer id);
 
-    //编辑分类
-    void update(Category category);
+    int updateByPrimaryKeySelective(Category record);
+
+    int updateByPrimaryKey(Category record);
 }
