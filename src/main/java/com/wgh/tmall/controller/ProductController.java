@@ -43,7 +43,7 @@ public class ProductController {
         Product p = productService.get(id);
 //        Category c = categoryService.get(p.getCid());
 //        p.setCategory(c);
-        
+
         model.addAttribute("p",p);
         return "admin/editProduct";
     }
