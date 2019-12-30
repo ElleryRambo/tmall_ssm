@@ -1,5 +1,6 @@
 package com.wgh.tmall.service;
 
+import com.wgh.tmall.pojo.Category;
 import com.wgh.tmall.pojo.Product;
 
 
@@ -18,4 +19,10 @@ public interface ProductService {
     List list(int cid);
 
     void setFirstProductImage(Product p);
+
+    void fill(List<Category> cs);
+
+    void fill(Category c);
+
+    void fillByRow(List<Category> cs);
 }
