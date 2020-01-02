@@ -1,11 +1,15 @@
 package com.wgh.tmall.controller;
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import com.wgh.tmall.pojo.Category;
+import com.wgh.tmall.pojo.User;
 import com.wgh.tmall.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.util.HtmlUtils;
 
 import java.util.List;
 
@@ -34,5 +38,23 @@ public class ForeController {
         productService.fillByRow(cs);
         model.addAttribute("cs",cs);
         return "fore/home";
+    }
+
+    @RequestMapping("foreregister")
+    public String register(Model model, User user){
+        String name = user.getName();
+        name = HtmlUtils.htmlEscape(name);
+        user.setName(name);
+        boolean exist = userService.isExist(name);
+
+        if (exist){
+            String msg = "用户名已经被使用，不能使用。";
+            model.addAttribute("msg",msg);
+            model.addAttribute("user",null);
+            return "fore/register";
+        }
+        userService.add(user);
+
+        return "redirect:registerSuccessPage";
     }
 }
