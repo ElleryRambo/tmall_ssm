@@ -5,9 +5,7 @@ import com.wgh.tmall.pojo.Product;
 import com.wgh.tmall.pojo.Category;
 import com.wgh.tmall.pojo.ProductExample;
 import com.wgh.tmall.pojo.ProductImage;
-import com.wgh.tmall.service.CategoryService;
-import com.wgh.tmall.service.ProductImageService;
-import com.wgh.tmall.service.ProductService;
+import com.wgh.tmall.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +21,10 @@ public class ProductServiceImpl implements ProductService {
     CategoryService categoryService;
     @Autowired
     ProductImageService productImageService;
+    @Autowired
+    OrderItemService orderItemService;
+    @Autowired
+    ReviewService reviewService;
 
     @Override
     public void add(Product p) {
@@ -105,6 +107,23 @@ public class ProductServiceImpl implements ProductService {
                 productsByRow.add(productsOfEachRow);
             }
             c.setProductsByRow(productsByRow);
+        }
+    }
+
+    @Override
+    public void setSaleAndReviewNumber(Product p) {
+        int salecount = orderItemService.getSaleCount(p.getId());
+        p.setSaleCount(salecount);
+
+        int reviewcount = reviewService.getCount(p.getId());
+        p.setReviewCount(reviewcount);
+
+    }
+
+    @Override
+    public void setSaleAndReviewNumber(List<Product> ps) {
+        for (Product p : ps) {
+            setSaleAndReviewNumber(p);
         }
     }
 

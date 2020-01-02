@@ -1,8 +1,7 @@
 package com.wgh.tmall.controller;
 
 import com.sun.org.apache.xpath.internal.operations.Mod;
-import com.wgh.tmall.pojo.Category;
-import com.wgh.tmall.pojo.User;
+import com.wgh.tmall.pojo.*;
 import com.wgh.tmall.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.HtmlUtils;
 
+import javax.jws.WebParam;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -32,6 +32,8 @@ public class ForeController {
     OrderService orderService;
     @Autowired
     OrderItemService orderItemService;
+    @Autowired
+    ReviewService reviewService;
 
     @RequestMapping("forehome")
     public String home(Model model){
@@ -78,5 +80,23 @@ public class ForeController {
     public String logout(HttpSession session){
         session.removeAttribute("user");
         return "redirect:forehome";
+    }
+
+    @RequestMapping("foreproduct")
+    public String product(Model model,int pid){
+        Product p =productService.get(pid);
+
+        List<ProductImage> productSingleImages = productImageService.list(p.getId(),ProductImageService.type_single);
+        List<ProductImage> productDetailsImages = productImageService.list(p.getId(),ProductImageService.type_detail);
+        p.setProductSingleImages(productSingleImages);
+        p.setProductDetailImages(productDetailsImages);
+
+        List<PropertyValue> pvs = propertyValueService.list(p.getId());
+        List<Review> reviews =reviewService.list(p.getId());
+        productService.setSaleAndReviewNumber(p);
+        model.addAttribute("reviews",reviews);
+        model.addAttribute("p",p);
+        model.addAttribute("pvs",pvs);
+        return "fore/product";
     }
 }
