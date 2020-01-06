@@ -159,6 +159,8 @@ public class ForeController {
         return "fore/category";
     }
 
+
+    //很复杂，需再看
     @RequestMapping("foresearch")
     public String search( String keyword,Model model){
         PageHelper.offsetPage(0,20);
@@ -166,6 +168,35 @@ public class ForeController {
         productService.setSaleAndReviewNumber(ps);
         model.addAttribute("ps",ps);
         return "fore/searchResult";
+    }
+
+    @RequestMapping("forebuyone")
+    public String buyone(int pid, int num, HttpSession session) {
+        Product p = productService.get(pid);
+        int oiid = 0;
+
+        User user =(User)  session.getAttribute("user");
+        boolean found = false;
+        List<OrderItem> ois = orderItemService.listByUser(user.getId());
+        for (OrderItem oi : ois) {
+            if(oi.getProduct().getId().intValue()==p.getId().intValue()){
+                oi.setNumber(oi.getNumber()+num);
+                orderItemService.update(oi);
+                found = true;
+                oiid = oi.getId();
+                break;
+            }
+        }
+
+        if(!found){
+            OrderItem oi = new OrderItem();
+            oi.setUid(user.getId());
+            oi.setNumber(num);
+            oi.setPid(pid);
+            orderItemService.add(oi);
+            oiid = oi.getId();
+        }
+        return "redirect:forebuy?oiid="+oiid;
     }
 
 }
