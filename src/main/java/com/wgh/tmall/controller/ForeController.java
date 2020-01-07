@@ -1,21 +1,18 @@
 package com.wgh.tmall.controller;
 
 import com.github.pagehelper.PageHelper;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import com.wgh.tmall.pojo.*;
 import com.wgh.tmall.service.*;
 import comparator.*;
 import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.util.HtmlUtils;
 
-import javax.jws.WebParam;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -319,5 +316,31 @@ public class ForeController {
         model.addAttribute("os", os);
 
         return "fore/bought";
+    }
+
+    @RequestMapping("foreconfirmPay")
+    public String confirmPay( Model model,int oid) {
+        Order o = orderService.get(oid);
+        orderItemService.fill(o);
+        model.addAttribute("o", o);
+        return "fore/confirmPay";
+    }
+
+    @RequestMapping("foreorderConfirmed")
+    public String orderConfirmed( Model model,int oid) {
+        Order o = orderService.get(oid);
+        o.setStatus(OrderService.waitReview);
+        o.setConfirmDate(new Date());
+        orderService.update(o);
+        return "fore/orderConfirmed";
+    }
+
+    @RequestMapping("foredeleteOrder")
+    @ResponseBody
+    public String deleteOrder( Model model,int oid){
+        Order o = orderService.get(oid);
+        o.setStatus(OrderService.delete);
+        orderService.update(o);
+        return "success";
     }
 }
